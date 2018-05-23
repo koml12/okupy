@@ -8,7 +8,7 @@ def str_to_secs(timestr):
     """Converts a time string (i.e. 30s) to a number of seconds (i.e. 30)
 
     Arguments:
-        timestr {str} -- string representation of the time. Allows suffixes of 's',                  'm', or 'h'
+        timestr {str} -- string representation of the time.
     Returns:
         {int} -- number of seconds given by the time string input.
     """
@@ -18,7 +18,7 @@ def str_to_secs(timestr):
         # Check if there are any letters before the last char in the input.
         # If length is 1, then we're checking the empty string, so we have to
         # skip that case.
-        return -1    
+        return -1
 
     if not timestr[l - 1].isalpha():
         # Default with no suffix is seconds.
