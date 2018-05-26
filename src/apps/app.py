@@ -6,12 +6,12 @@ class Application(ABC):
     Note that all methods MUST be implemented, even if they are just pass'ed
     """
 
-    @abstractmethod 
+    @abstractmethod
     def setup(self, *args, **kwargs):
         """ Sets up the state of the application to start the task.
         """
         pass
-    
+
     @abstractmethod
     def run(self, *args, **kwargs):
         """ Runs the application task

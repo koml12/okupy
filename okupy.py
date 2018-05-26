@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from utils.times import str_to_secs, TimeThread
+from src.utils.times import str_to_secs, TimeThread
 
 def main():
     if len(sys.argv) != 2:
