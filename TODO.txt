@@ -1,8 +1,8 @@
 Done:
 - Make a timer thread to count down seconds in the background.
 - Make abstract base class for application
+- Implement abstract class in HackerNews application
 
 To-do:
-- Implement abstract class in HackerNews application
 - Find the currently installed applications in the main okupy
 - Execute the applications in another thread.

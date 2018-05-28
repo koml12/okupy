@@ -1,3 +1,5 @@
+"""Class describing an abstract Application for use with okupy."""
+
 from abc import ABC, abstractmethod
 
 class Application(ABC):
@@ -23,3 +25,4 @@ class Application(ABC):
         """Code to execute when the application is stopped.
         """
         pass
+        
