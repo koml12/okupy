@@ -14,12 +14,12 @@ class Application(ABC):
 
     @abstractmethod
     def run(self, *args, **kwargs):
-        """ Runs the application task
+        """ Runs the application task.
         """
         pass
 
     @abstractmethod
     def stop(self, *args, **kwargs):
-        """Code to execute when the application is stopped
+        """Code to execute when the application is stopped.
         """
         pass
