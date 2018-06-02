@@ -5,8 +5,7 @@ links they want to check out later.
 
 import requests
 
-# pylint: disable=E0401
-from app import Application
+from src.apps.app import Application
 
 
 class HackerNews(Application):

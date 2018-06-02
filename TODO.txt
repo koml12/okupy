@@ -2,7 +2,10 @@ Done:
 - Make a timer thread to count down seconds in the background.
 - Make abstract base class for application
 - Implement abstract class in HackerNews application
-
-To-do:
 - Find the currently installed applications in the main okupy
 - Execute the applications in another thread.
+
+To-do:
+- Terminate the execution thread when the timer runs out.
+  Ideally, able to call the stop() method on the application when the timer 
+  is up, so we aren't left with unclosed data at the end.
