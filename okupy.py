@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 
 import sys
-from src.utils.times import str_to_secs, TimeThread
-from settings import APPS
 from importlib import import_module
-import importlib
+from multiprocessing import Pool
+
+from settings import APPS, ARGS, KWARGS
+from src.utils.times import str_to_secs
+from src.utils.processes import run_apps, sleep_process
+
 
 def main():
     if len(sys.argv) != 2:
@@ -26,16 +29,18 @@ def main():
 
     The app list should be passed over to another thread that actually runs 
     the applications in the background.
-
+    """
     app_list = []
     for app_name in APPS:
         module = import_module(APPS.get(app_name))
         app = getattr(module, app_name)
         app_list.append(app)
     print(app_list)
-    """
-    time_thread = TimeThread(secs)
-    time_thread.run()
+    
+    pool = Pool(processes=2)
+    pool.apply_async(sleep_process, args=(5,))
+    pool.apply(run_apps, args=(app_list, ARGS, KWARGS))
+    
 
 if __name__ == '__main__':
     main()

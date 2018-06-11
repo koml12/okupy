@@ -4,6 +4,7 @@ links they want to check out later.
 """
 
 import requests
+import sys
 
 from src.apps.app import Application
 
@@ -83,6 +84,7 @@ class HackerNews(Application):
             story = requests.get(url=item_url).json()
             print('Title: {}'.format(story.get('title')))
             print('URL: {}'.format(story.get('url')))
+            sys.stdout.flush()
 
             flag = True      # Determines input validity.
             while flag:

@@ -1,7 +1,6 @@
-""" times.py
+""" 
+times.py
 """
-
-import threading
 import time
 
 def str_to_secs(timestr):
@@ -36,45 +35,10 @@ def str_to_secs(timestr):
         return -1
     
 
-class TimeThread(threading.Thread):
-    """ Class that maintains a threaded timer over a set number of seconds.
-    """
-
-    def __init__(self, secs):
-        """ Initializes the thread with a specified duration in seconds.
-        
-        Arguments:
-            secs {int} -- number of seconds the thread should run for.
-        """
-        threading.Thread.__init__(self)
-        if secs < 0:
-            raise ValueError('Input time cannot be negative.')
-
-        self.secs = secs
-
-    def run(self):
-        """ Runs the thread for the passed in number of seconds.
-        """
-        t_now = int(time.time())
-
-        while True:
-            t_then = int(time.time())
-            if t_then - t_now == self.secs:
-                break
-
-
 def main():
     timestr = '0'
     t = str_to_secs(timestr)
     print(t)
-    thread = TimeThread(t)
-    t_start = time.time()
-    thread.start()
-    thread.join()
-    t_end = time.time()
-    print('done')
-    print(t_end - t_start)
-    
 
 if __name__ == '__main__':
     main()
