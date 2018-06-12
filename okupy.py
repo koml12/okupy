@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 from importlib import import_module
-from multiprocessing import Pool
+from multiprocessing import Pool, Queue, Manager
 
 from settings import APPS, ARGS, KWARGS
 from src.utils.times import str_to_secs
@@ -36,10 +37,19 @@ def main():
         app = getattr(module, app_name)
         app_list.append(app)
     print(app_list)
-    
+
+    print('okupy pid is {}'.format(os.getpid()))
+
+    manager = Manager()
+    queue = manager.Queue()
+
     pool = Pool(processes=2)
-    pool.apply_async(sleep_process, args=(5,))
-    pool.apply(run_apps, args=(app_list, ARGS, KWARGS))
+    pool.apply_async(sleep_process, args=(secs, queue))
+    pool.apply(run_apps, args=(app_list, ARGS, KWARGS, queue))
+    
+    
+    
+    
     
 
 if __name__ == '__main__':

@@ -1,21 +1,23 @@
-"""Thread that runs the applications given by the program."""
+"""Processes to run the applications and keep track of time."""
 
-import multiprocessing
 import random
-import threading
-import time
 from importlib import import_module
-from multiprocessing import Pool
+from multiprocessing import Pool, Manager
+from queue import Empty
 from time import sleep
 
 from settings import APPS, ARGS, KWARGS
 
-def run_apps(apps, g_args, g_kwargs):
-    # Going to remove apps from the list after we use them, but we don't 
+
+def run_apps(apps, g_args, g_kwargs, queue):
+
+    time_up = False
+
+    # Going to remove apps from the list after we use them, but we don't
     # want to lose access to the list of apps, so make a copy of the list.
     local_apps = apps[:]
 
-    while len(local_apps) > 0:
+    while local_apps and not time_up:
         app = random.sample(local_apps, 1)[0]    # Get random app from list.
         print(app)
         
@@ -33,10 +35,16 @@ def run_apps(apps, g_args, g_kwargs):
 
         local_apps.remove(app)
 
-def sleep_process(n):
-    sleep(n)
-    print('Sleep done')
-    
+        # Check if the time limit has expired.
+        try:
+            queue.get(timeout=0.001)    # Very low timeout to prevent blocking.
+            time_up = True
+        except Empty:
+            pass        # Resume normal execution.
+
+def sleep_process(secs, queue):
+    sleep(secs)
+    queue.put(True, timeout=0.001)      # Low timeout to prevent blocking.    
 
 if __name__ == '__main__':
     app_list = []
@@ -46,6 +54,10 @@ if __name__ == '__main__':
         app_list.append(app)
     print(app_list)
 
+
+    manager = Manager()
+    queue = manager.Queue()
+
     pool = Pool(processes=2)
-    pool.apply_async(sleep_process, args=(5,))
-    pool.apply(run_apps, args=(app_list, ARGS, KWARGS))
+    pool.apply(run_apps, args=(app_list, ARGS, KWARGS, queue))
+    pool.apply_async(sleep_process, args=(5, queue))

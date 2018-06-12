@@ -21,7 +21,7 @@ passed in as **kwargs when calling the setup() function of the application.
 """
 KWARGS = {
     'HackerNews': {
-        'max': 30,
+        'max': 10,
         'file': './hackernews2.txt',
     },
 }

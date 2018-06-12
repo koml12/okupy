@@ -6,7 +6,9 @@ Done:
 - Execute the applications in another thread.
 - Switch to function-based processes instead of threads, and use a Pool to
   connect everything together.
+- Used a simple queue for interprocess communication between the running apps 
+  and timer processes. Changed the behavior of the entire program to finish the
+  current application if time is up, instead of interrupting the entire program
+  and killing everything. 
 
 To-do:
-- Send a signal to the running app process when the sleep process is up.
-  The signal should call the stop() method if possible.
