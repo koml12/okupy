@@ -1,13 +1,17 @@
 #!/usr/bin/env python3
 
+"""Main program. Handles command line inputs and spawns processes as defined
+in src/utils/processes.py
+"""
+
 import os
 import sys
 from importlib import import_module
-from multiprocessing import Pool, Queue, Manager
+from multiprocessing import Manager, Pool
 
 from settings import APPS, ARGS, KWARGS
-from src.utils.times import str_to_secs
 from src.utils.processes import run_apps, sleep_process
+from src.utils.times import str_to_secs
 
 
 def main():
@@ -17,20 +21,14 @@ def main():
         sys.exit(1)
 
     secs = str_to_secs(sys.argv[1])
-    
-    if (secs == -1):
+
+    if secs == -1:
         # Invalid time input.
         print('Invalid time input. Suffixes of \'s\', \'m\', or \'h\' are allowed.')
         sys.exit(1)
-    
-    """
-    The code below is used to import the classes from the settings.py file.
-    We can then instantiate the classes however we want by just iterating over
-    the list.
 
-    The app list should be passed over to another thread that actually runs 
-    the applications in the background.
-    """
+    # Get the <class> objects for each class specified in the APPS dictionary.
+    # Each element app in app_list can be instantiated by calling app().
     app_list = []
     for app_name in APPS:
         module = import_module(APPS.get(app_name))
@@ -40,17 +38,14 @@ def main():
 
     print('okupy pid is {}'.format(os.getpid()))
 
+    # Create a queue from a manager so we can share it through out processes.
     manager = Manager()
     queue = manager.Queue()
 
     pool = Pool(processes=2)
     pool.apply_async(sleep_process, args=(secs, queue))
     pool.apply(run_apps, args=(app_list, ARGS, KWARGS, queue))
-    
-    
-    
-    
-    
+
 
 if __name__ == '__main__':
     main()

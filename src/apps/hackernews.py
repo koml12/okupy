@@ -3,8 +3,9 @@ Application that allows the user to read Hacker News headlines and save any
 links they want to check out later.
 """
 
-import requests
 import sys
+
+import requests
 
 from src.apps.app import Application
 

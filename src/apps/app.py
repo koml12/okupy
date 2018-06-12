@@ -10,9 +10,9 @@ class Application(ABC):
     """
 
     def __init__(self):
-         # Forces output to the terminal window. Normally, you wouldn't need to
+        # Forces output to the terminal window. Normally, you wouldn't need to
         # do this because you're in 'interactive mode', but because apps run as
-        # parts of subprocesses, we need to specifically bind stdin to the 
+        # parts of subprocesses, we need to specifically bind stdin to the
         # current terminal.
         sys.stdin = open('/dev/tty')
 
