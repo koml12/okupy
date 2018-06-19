@@ -36,11 +36,28 @@ def main():
 
     print(args)
 
+
     excluded_apps = []
 
     if args.exclude:
         for app in args.exclude:
             excluded_apps.append(app)
+
+    # Get the <class> objects for each class specified in the APPS dictionary.
+    # Each element app in app_list can be instantiated by calling app().
+    app_list = []
+    app_list_no_exclude = []
+    for app_name in APPS:
+        module = import_module(APPS.get(app_name))
+        app = getattr(module, app_name)
+        app_list_no_exclude.append(app)
+        if app_name not in excluded_apps:    
+            app_list.append(app)
+            
+    print(app_list)
+
+    if args.info:
+        commands.get_app_info(app_list_no_exclude, args.info)
 
     if args.time:
         secs = str_to_secs(args.time[0])
@@ -48,16 +65,6 @@ def main():
             # Invalid time input.
             print('Invalid time input. Suffixes of \'s\', \'m\', or \'h\' are allowed.')
             sys.exit(1)
-
-        # Get the <class> objects for each class specified in the APPS dictionary.
-        # Each element app in app_list can be instantiated by calling app().
-        app_list = []
-        for app_name in APPS:
-            if app_name not in excluded_apps:
-                module = import_module(APPS.get(app_name))
-                app = getattr(module, app_name)
-                app_list.append(app)
-        print(app_list)
 
         # Create a queue from a manager so we can share it through out processes.
         manager = Manager()

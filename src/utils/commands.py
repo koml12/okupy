@@ -1,16 +1,20 @@
 """Functions to run when command line flags are specified."""
 
-from settings import APPS
+from settings import ARGS, KWARGS
 
-def add_app(name, path):
-    if not APPS.get(name):
-        APPS[name] = path
-        print('App \'{}\' installed'.format(name))
-    else:
-        if APPS.get(name) != path:
-            old_path = APPS.get(name)
-            APPS[name] = path
-            print('Changed path of \'{}\' from \'{}\' to \'{}\''
-                   .format(name, old_path, path))
+def get_app_info(app_list, info_list):
+    app_names = [app.__name__ for app in app_list]
+    for app in info_list:
+        if app in app_names:
+            class_obj = next(i for i in app_list if i.__name__ == app)
+            print(app)
+            print('    {}'.format(class_obj.__doc__))
+            print('    setup args: {}'.format(ARGS.get(app)))
+            print('    setup kwargs: {}'.format(KWARGS.get(app)))
+            print('')
+            
+            
         else:
-            print('App \'{}\' is already included.'.format(name))
+            print('App {} does not exist'.format(app.__name__))
+
+    
