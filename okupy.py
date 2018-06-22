@@ -19,23 +19,30 @@ from src.utils import commands
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-t', '--time', nargs=1, 
+    parser.add_argument('-t', '--time',
+                        nargs=1, 
                         help='Amount of time to run application for')
 
-    parser.add_argument('-e', '--exclude', nargs='*',
+    parser.add_argument('-e', '--exclude',
+                        nargs='*',
+                        metavar=('APPNAME', 'APPNAME',),
                         help='Exclude apps from running in the current instance'
                         + ' of okupy')
 
-    parser.add_argument('-i', '--info', nargs='*',
+    parser.add_argument('-i', '--info',
+                        metavar=('APPNAME', 'APPNAME'),
+                        nargs='*',
                         help='Get info about specific apps')
 
-    parser.add_argument('-o', '--override', nargs='*',
+    parser.add_argument('-o', '--override',
+                        nargs=3,
+                        metavar=('APPNAME', 'ARGS', 'KWARGS'),
+                        action='append',
                         help='Override args and kwargs for apps at runtime')
 
     args = parser.parse_args()
 
     print(args)
-
 
     excluded_apps = []
 
@@ -55,6 +62,10 @@ def main():
             app_list.append(app)
             
     print(app_list)
+
+    if args.override:
+        commands.override(app_list, args.override)
+
 
     if args.info:
         commands.get_app_info(app_list_no_exclude, args.info)
